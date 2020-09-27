@@ -34,10 +34,10 @@ int main() {
 
 
   for(unsigned i = 0; i < 10; i++){
-    time(&now);
-    sendto(sockfd, (const char *)buffer, strlen(buffer),
-	               MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
-    if(setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&tv,sizeof(struct timeval)) > 0){
+    time(&start);
+    sendto(sockfd, (const char *)buffer, strlen(hello),
+        MSG_CONFIRM, (const struct sockaddr *) &servaddr, len);
+    if(setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&t,sizeof(struct timeval)) > 0){
       time(&end);
       std::cout << "Received in " << difftime(now, end) << std::endl;
     }
