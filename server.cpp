@@ -35,7 +35,6 @@ int main() {
 
 	// Bind the socket with the server address
 	int ll = bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr));
-	std:: cout << "bind " << ll << std::endl; 
 
 	// random generator
 	srand(time(0));
