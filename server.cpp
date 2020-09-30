@@ -12,7 +12,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define PORT	 12550
+#define PORT	 12551
 
 
 int main() {
@@ -34,8 +34,11 @@ int main() {
 	servaddr.sin_port = htons(PORT); // port number
 
 	// Bind the socket with the server address
-	int ll = bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr));
-
+	if(bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0){
+		std::cout << "Bind failed" << std::endl; 
+		exit(1); 
+	}
+	
 	// random generator
 	srand(time(0));
 
@@ -45,8 +48,7 @@ int main() {
 			MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 		buffer[n] = '\0';
 
-		std::cout << "here" << std::endl;
-
+		
 		//If a random number in the range of 0 to 10 is less than 4,
 		//we consider the packet lost and do not respond
 		if (rand()%10 < 4) continue;
