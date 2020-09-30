@@ -12,7 +12,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define PORT	 12500
+#define PORT	 12550
 
 
 int main() {
@@ -34,7 +34,8 @@ int main() {
 	servaddr.sin_port = htons(PORT); // port number
 
 	// Bind the socket with the server address
-	bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr));
+	int ll = bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr));
+	std:: cout << "bind " << ll << std::endl; 
 
 	// random generator
 	srand(time(0));
