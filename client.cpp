@@ -14,7 +14,7 @@ int main() {
 	int sockfd, n;
   time_t start, end;
 	socklen_t len;
-	char buffer[1024];
+	char buffer[1024] = "hello";
 	struct sockaddr_in servaddr;
   struct timeval t;
 
@@ -32,15 +32,23 @@ int main() {
 	servaddr.sin_addr.s_addr = INADDR_ANY; // localhost
 	servaddr.sin_port = htons(PORT); // port number
 
+	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&t,sizeof(struct timeval));
 
-  for(unsigned i = 0; i < 10; i++){
+
+	for(unsigned i = 0; i < 10; i++){
     time(&start);
+
     sendto(sockfd, (const char *)buffer, strlen(buffer),
         MSG_CONFIRM, (const struct sockaddr *) &servaddr, len);
-    if(setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&t,sizeof(struct timeval)) > 0){
-      time(&end);
-      std::cout << "Received in " << difftime(start, end) << std::endl;
-    }
+
+
+		n = recvfrom(sockfd, (char *)buffer, sizeof(buffer),
+		MSG_WAITALL, ( struct sockaddr *) &servaddr, &len);
+		buffer[n] = '\0';
+		if(n >= 0){
+    	time(&end);
+    	std::cout << "Received in " << difftime(start, end) << std::endl;
+		}
     else{
       std::cout << "Packet not received; timeout" << std::endl;
     }
