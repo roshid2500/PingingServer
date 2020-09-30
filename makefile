@@ -1,6 +1,6 @@
 C=client
 S=server
-CFLAGS=-Wall -Werror -g -std=c++14
+CFLAGS=-g -std=c++14
 
 
 all: $(S).o $(C).o 
@@ -11,7 +11,7 @@ $(C).o : $(C).cpp
 	g++ $(CFLAGS) -c $(C).cpp -o $(C).o
 
 $(S).o: $(S).cpp
-	g++ $(CFLAGS) -c $(S).cpp -o $(C).o
+	g++ $(CFLAGS) -c $(S).cpp -o $(S).o
 
 clean:
 	rm $(S) $(C) *.o
