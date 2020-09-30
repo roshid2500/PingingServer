@@ -20,6 +20,7 @@ int main() {
 
   //set timeout val to 1
   t.tv_sec = 1;
+	t.tv_usec = 0;
 
 	// Create a UDP socket
 	// Notice the use of SOCK_DGRAM for UDP packets
@@ -32,19 +33,20 @@ int main() {
 	servaddr.sin_addr.s_addr = INADDR_ANY; // localhost
 	servaddr.sin_port = htons(PORT); // port number
 
-	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&t,sizeof(struct timeval));
-
+	int l = setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&t,sizeof(struct timeval));
+	std::cout << "setsock " << l << std::endl;
 
 	for(unsigned i = 0; i < 10; i++){
+		std::cout << "here1111" << std::endl;
     time(&start);
 
     sendto(sockfd, (const char *)buffer, strlen(buffer),
         MSG_CONFIRM, (const struct sockaddr *) &servaddr, len);
 
-
 		n = recvfrom(sockfd, (char *)buffer, sizeof(buffer),
 		MSG_WAITALL, ( struct sockaddr *) &servaddr, &len);
 		buffer[n] = '\0';
+
 		if(n >= 0){
     	time(&end);
     	std::cout << "Received in " << difftime(start, end) << std::endl;
